@@ -5,8 +5,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Footer } from "./Components/Footer";
 import { Recipe } from "./Pages/Recipe";
 import { RecipeList } from "./Pages/RecipeList";
+import { Profile } from "./Pages/Profile";
 
 function App() {
+  
+
   return (
     <div className="flex flex-col min-h-screen">
       <Router>
@@ -17,6 +20,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path='recipe/:id' element={<Recipe />} />
             <Route path='recipes/:category' element={<RecipeList />} />
+            <Route path='/my-account' element={<Profile />} />
           </Routes>
         </main>
         <Footer />

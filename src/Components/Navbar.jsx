@@ -1,8 +1,9 @@
 import React from 'react';
 import search from '../assets/icons8-search.svg';
 import { Link } from 'react-router-dom';
-
 export const Navbar = () => {
+    const token=localStorage.getItem('token');
+
     return (
         <div className="navbar h-[10vh] w-full shadow flex items-center justify-between px-4 py-2 bg-white">
             <div className="logo text-lg font-bold">RecipeBook</div>
@@ -12,7 +13,9 @@ export const Navbar = () => {
                 <Link to="/"><li className='hover:text-orange-400 active:text-orange-600'>Home</li></Link>
                 <Link to="/recipes/all"><li className='hover:text-orange-400 active:text-orange-600'>Recipes</li></Link>
                 <Link to="/about-us"><li className='hover:text-orange-400 active:text-orange-600'>About Us</li></Link>
-                <Link to="/my-account"><li className='hover:text-orange-400 active:text-orange-600'>My Account</li></Link>
+                {token ? (
+                    <Link to="/my-account"><li className='hover:text-orange-400 active:text-orange-600'>My Account</li></Link>
+                ) : ( <Link to="/login"><li className='hover:text-orange-400 active:text-orange-600'>My Account</li></Link>)}
             </ul>
 
             {/* Search and login area */}
