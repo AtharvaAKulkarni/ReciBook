@@ -16,13 +16,14 @@ export const Login = () => {
   const handleLogin=async()=>{
     try{
       const response=await axios.post('http://localhost:3000/login', {username, password});
-      alert("Login Success")
+      alert("Login Success");
       localStorage.setItem('token', response.data.token);
+      console.log("Token set in local storage!");
       localStorage.setItem('user',JSON.stringify(response.data.user));
-      navigate('/my-account');
+      navigate('/');
     }
     catch(error){
-      alert(error);
+      alert(error.response.data.message);
     }
   }
   console.log(loginImg);
@@ -38,8 +39,7 @@ export const Login = () => {
           <input type='text' placeholder='Username' className='border-2 rounded-[8px] h-12 w-85 p-2' onChange={(e)=>setUsername(e.target.value)}/>
           <input type='password' placeholder='Password' className='border-2 rounded-[8px] h-12 w-85 p-2' onChange={(e)=>setPassword(e.target.value)}/>
         </div>
-          <div className='flex w-95 gap-4 font-mono my-8'><input type='checkbox' /><p>I agree to the <span className='text-blue-400 underline'>Terms and Conditions</span> and acknowledge my responsibilities.</p></div>
-          <button className='border-[1px] rounded-2xl h-11 w-50 mx-auto bg-amber-400 active:bg-amber-600' onClick={handleLogin}>Login</button>
+          <button className='border-[1px] rounded-2xl h-11 w-50 mx-auto mt-4 bg-amber-400 active:bg-amber-600' onClick={handleLogin}>Login</button>
           <p className='mx-auto my-7'>Dont have an account? <span className='text-blue-600 cursor-pointer' onClick={handleSignUp}>Sign Up</span> yourself!</p>
       </div>
     </div>

@@ -30,6 +30,23 @@ const UserSchema=new mongoose.Schema({
     bio: { type: String, default: "" }
 });
 
+// verify token 
+const verifyToken=(req, res, next)=>{
+    const token=req.headers.authorization;
+    if(!token){
+        return res.status(401).json({message:"No token fonud"})
+    }
+    const tokenParts = token.split(' ');
+    try{
+        const JWT_SECRET=process.env.JWT_SECRET;
+        const decoded=jwt.verify(tokenParts[1], JWT_SECRET);
+        req.userId=decoded.userId;
+        next();
+    }
+    catch{
+        res.status(403).json({message:"Invalid Token"});
+    }
+}
 const User=mongoose.model("User", UserSchema);
 
 //Get signup request
@@ -38,8 +55,8 @@ app.post('/sign-up', async (req, res)=>{
         const {name, username, email, password}=req.body;
 
         //Check if user exists
-        const existingUser=await User.findOne({email});
-        if(existingUser) return res.status(400).json({message: "User already exists!"});
+        const existingUser=await User.findOne({username});
+        if(existingUser){ return res.status(400).json({message: "User already exists!", success:false})};
 
         //Hash password
         const hashedPassword=await bcrypt.hash(password, 10);
@@ -47,10 +64,10 @@ app.post('/sign-up', async (req, res)=>{
         //Create new User
         const newUser=new User({name, username, email, password:hashedPassword});
         await newUser.save();
-        res.json({message:"User registered successfully"});
+        res.json({message:"User registered successfully", success:true});
     }
     catch(error){
-        res.status(500).json({message: "Sign up failed"})
+        res.status(500).json({message: "Sign up failed", success:false})
     }
 })
 
@@ -69,17 +86,17 @@ app.post('/login', async (req,res)=>{
 
         //Send JWT
         const JWT_SECRET = process.env.JWT_SECRET;
-        const token=jwt.sign({userId: user._id}, JWT_SECRET, {expiresIn:"1h"});
+        const token=jwt.sign({userId: user._id}, JWT_SECRET, {expiresIn:"1m"});
         res.json({ token, user: { id: user._id, username: user.username, email: user.email } });
     }
     catch(error){
-        console.log(error);
+        res.json({message: error});
     }
 })
 
 //Update Profile Data
 
-app.put('/update-profile', async (req,res)=>{
+app.put('/update-profile', verifyToken, async (req,res)=>{
     try{
         const {userId, profilePicture, bio}=req.body;
         const updatedUser=await User.findByIdAndUpdate(userId, {profilePicture, bio}, {new: true});
@@ -92,17 +109,19 @@ app.put('/update-profile', async (req,res)=>{
 })
 
 
-// //Get profile data
-app.post('/get-profile',async(req, res)=>{
+// Get profile data
+app.post('/get-profile', verifyToken, async(req, res)=>{
     try{
         const {userId}=req.body;
         const user=await User.findById(userId);
         res.json({message:"Profile fetched successfully", user: user})
     }
     catch(error){
-        res.json(500).json({message:"Profile cannot be fetched!"});
+        res.status(500).json({message:"Profile cannot be fetched!"});
     }
 })
+
+
 
 //Start server
 const PORT=process.env.PORT || 3000;
