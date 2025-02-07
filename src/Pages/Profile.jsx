@@ -21,6 +21,7 @@ export const Profile = () => {
                     setProfile(response.data.user);
                 }
                 catch(err){
+                    alert(err);
                     localStorage.removeItem('token');
                     localStorage.removeItem('user');
                     navigate('/login')

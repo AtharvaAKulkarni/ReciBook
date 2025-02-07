@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import loginImg from '../assets/login-img.png'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { use } from 'react';
+
 
 export const Login = () => {
   const navigate=useNavigate();
 
   const handleSignUp=()=>{
-    navigate('/sign-up');
+    navigate('/signup');
   }
 
   const [username, setUsername]=useState("");

@@ -86,7 +86,7 @@ app.post('/login', async (req,res)=>{
 
         //Send JWT
         const JWT_SECRET = process.env.JWT_SECRET;
-        const token=jwt.sign({userId: user._id}, JWT_SECRET, {expiresIn:"1m"});
+        const token=jwt.sign({userId: user._id}, JWT_SECRET, {expiresIn:"1h"});
         res.json({ token, user: { id: user._id, username: user.username, email: user.email } });
     }
     catch(error){
@@ -121,8 +121,84 @@ app.post('/get-profile', verifyToken, async(req, res)=>{
     }
 })
 
+// <-- Recipes section starts here -->
+const recipeSchema=new mongoose.Schema({
+    name:{type:String, required: true},
+    description:{type: String, required: true},
+    ingridients:{type: Array, required: true},
+    likes: {type: Number, required: false},
+    notes:{type: String, required: false},
+    time: {type: String, required: false},
+    rating: {type: Number, required: false},
+    category: {type: Array, required: true},
+    yield: {type:String, required: true},
+    instructions:{type:String, required:true},
+    uploadedOn: {type:Date, default:Date.now},
+    uploadedBy: {type:String, required: true}
+})
+
+const recipes=mongoose.model("Recipes", recipeSchema);
+
+//Add recipes
+app.post('/add-recipe', async (req, res)=>{
+    try{
+        const {name, description, ingridients, likes, notes, time, rating, category}=req.body;
+        const newRecipe=new recipes({name, description, ingridients, likes, notes, time, rating, category});
+        await newRecipe.save();
+        res.json({message:"Recipe added succesfully!"});
+    }
+    catch(error){
+        res.json({message:"Could'nt add recipe!", error: error})
+    }
+})
 
 
+// Get recipes based on condition
+
+app.post('/get-recipes', async (req, res)=>{
+    try{
+        const {condition, category, id}=req.body;
+        if(condition==="trending"){
+            try{
+                const topRecipes=await recipes.find().sort({likes: -1}).limit(4);
+                res.status(200).json({message:"Fetched top 4 recipes", recipes: topRecipes});
+            }
+            catch(err){
+                res.status(500).json({message:"Couldn't fetch recipe"});
+            }
+        }
+        else if(condition==="category" && category){
+            try{
+                const fetchCategory=await recipes.find({category: category});
+                res.status(200).json({message:"Fetched category recipes", category: fetchCategory});
+            }
+            catch(err){
+                res.status(500).json({message:"Couldn't fetch recipe"});
+            }
+        }
+        else if(condition==="all"){
+            try{
+                const allRecipes=await recipes.find();
+                res.status(200).json({message:"Fetched top 4 recipes", recipes: allRecipes});
+            }
+            catch(err){
+                res.status(500).json({message:"Couldn't fetch recipe"});
+            }
+        }
+        else if(condition==="id" && id){
+            try{
+                const fetchRecipeFromId=await recipes.find({_id: id});
+                res.status(200).json({message:"Recipe from id fetched successfully!", recipe: fetchRecipeFromId});
+            }
+            catch(err){
+                res.status(500).json({message:"Couldn't fetch recipe"});
+            }
+        }
+    }
+    catch(err){
+        res.status(500);
+    }
+})
 //Start server
 const PORT=process.env.PORT || 3000;
 app.listen(PORT, ()=>{
