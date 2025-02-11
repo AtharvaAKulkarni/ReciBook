@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export const Addrecipe = () => {
     const [fields, setFields] = useState([""]);
     const [image, setImage] = useState(""); // Store Base64 string
@@ -15,7 +15,7 @@ export const Addrecipe = () => {
     const user = JSON.parse(localStorage.getItem("user")); 
     const userId = user?.username;
     const [bio, setBio] = useState("");
-
+    const navigate=useNavigate();
     useEffect(() => {
         if (!userId) return;
         const currentUser = async () => {
@@ -64,12 +64,14 @@ export const Addrecipe = () => {
                     },
                 }
             );
+            console.log(response.data);
             if (response.data.imageUrl) {
                 setImageUrl(`http://localhost:3000${response.data.imageUrl}`);
             }
             alert(response.data.message);
         } catch (error) {
             alert(error.response?.data?.message || "Something went wrong");
+            alert("Please login to add recipe!");
         }
     };
     

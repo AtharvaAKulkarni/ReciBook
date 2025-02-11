@@ -31,7 +31,7 @@ export const RecipeList = () => {
         {allRecipes.map((recipe, index)=>(
           <Link to={`/recipe/${recipe._id}`} key={index}>
             <div className="recipe-tile w-65 h-90 bg-amber-50 mt-8 hover:scale-105 transition-[2.5s] ease-in-out hover:shadow-2xl cursor-pointer">
-              <img src={loginImg} className='h-[75%] w-fit' />
+              <img src={`http://localhost:3000${recipe?.imageUrl}`} className='h-[75%] w-full' />
               <div className='h-[30%] w-full bg-cyan-50 flex flex-col justify-evenly'>
                 <p className='text-center flex justify-center items-center gap-2'><img src={star} className='h-4 w-4' />{recipe.rating}</p>
                 <p className='text-center w-full max-w-[100] text-[18px] font-semibold font-[Poppins]'>{recipe.name}</p>

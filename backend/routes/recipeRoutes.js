@@ -37,7 +37,7 @@ router.post('/add-recipe', verifyToken, upload.single("image"), async (req, res)
             instructions,
             uploadedBy,
             uploadedByBio,
-            imageUrl,
+            imageUrl: imageUrl,
             comments: [],
         });
 

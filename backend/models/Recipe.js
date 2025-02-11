@@ -14,7 +14,7 @@ const recipeSchema = new mongoose.Schema({
     uploadedOn: { type: Date, default: Date.now },
     uploadedBy: { type: String, required: true },
     uploadedByBio:{type:String},
-    image: { type: String, required: false },  // New field for recipe image
+    imageUrl: { type: String, required: false },  // New field for recipe image
     comments: [  // New field for comments
         {
             userImage: { type: String, required: true },  // User's profile picture

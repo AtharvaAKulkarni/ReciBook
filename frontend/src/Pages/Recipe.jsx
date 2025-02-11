@@ -34,7 +34,7 @@ export const Recipe = () => {
   // Loading & Error Handling
   if (loading) return <p>Loading...</p>;
   if (!recipe) return <p>Recipe not found</p>;
-
+  console.log(`http://localhost:3000${recipe?.imageUrl}`);
   return (
     <div className="flex flex-col h-full w-full bg-green-950">
       <div className="w-fit mx-auto h-fit mt-4 text-black">
@@ -70,20 +70,15 @@ export const Recipe = () => {
         <img
           src={`http://localhost:3000${recipe?.imageUrl}`}
           alt="Recipe"
-          className="w-[90vw] h-[50vh] mx-auto mt-8 md:w-[30vw] md:h-[80vh]"
+          className="w-[90vw] h-[50vh] mx-auto mt-8 md:w-[70vw] md:h-[80vh]"
         />
-
-
-        {/* Second and Third images - Hidden on small devices, visible on `md` and larger */}
-        <img src={recipe?.imageUrl} className="hidden md:block w-[30vw] h-[80vh] mx-auto mt-8" />
-        <img src={recipe?.imageUrl} className="hidden md:block w-[30vw] h-[80vh] mx-auto mt-8 " />
       </div>
 
 
       {/* Recipe Instructions & Ingredients */}
       <section className="bg-amber-50 mt-8" id="recipe">
         <div className="bg-purple-400 flex flex-col mt-13 w-[50vw] mx-auto mb-8 p-1 pb-3">
-          <img src={loginImg} className="h-25 w-25 rounded-full mx-auto -translate-y-8" />
+          <img src={`http://localhost:3000${recipe?.imageUrl}`} className="h-25 w-25 rounded-full mx-auto -translate-y-8" />
           <p className="mx-auto text-2xl font-bold text-white font-[Poppins]">
             {recipe?.name}
           </p>
@@ -142,7 +137,10 @@ export const Recipe = () => {
       {/* User info */}
       <div className="flex gap-3 ml-20 h-fit p-4 w-[70vw] bg-white mt-8 items-center rounded-2xl">
         <img src={loginImg} className="h-40 w-40 rounded-full" />
-        <div>
+        <div className="flex flex-col items-start">
+          <p>
+            {recipe?.uploadedBy}
+          </p>
           <p>
             {recipe?.uploadedByBio}
           </p>

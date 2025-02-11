@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import loginImg from '../assets/login-img.png'
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 
 export const Home = () => {
     const [trending, setTrending]=useState([]);
@@ -72,14 +73,14 @@ export const Home = () => {
                         {trending.map((recipe, index)=>(
                         <>
                             <div key={index} className='trending-element flex h-[35vh] max-h-[55vh] w-[70vw] justify-start bg-cyan-5 space-x-8.5'>
-                                <img src={loginImg} className='w-60 h-60 hover:opacity-75'/>
+                                <img src={`http://localhost:3000${recipe?.imageUrl}`} className='w-60 h-60 hover:opacity-75'/>
                                 <div className='flex flex-col h-[60%] max-h-[100%] w-full justify-baseline gap-2'>
-                                    <p className='text-xl text-gray-800'>24th January, 2025</p>
-                                    <p className='text-2xl font-bold font-serif hover:underline hover:cursor-pointer'>{recipe.name}</p>
+                                    <p className='text-xl text-gray-800'>{recipe?.uploadedOn.substring(0, 10)}</p>
+                                    <Link to={`recipe/${recipe?._id}`}><p className='text-2xl font-bold font-serif hover:underline hover:cursor-pointer'>{recipe.name}</p></Link>
                                     <p className='text-[18px] text-gray-600 font-serif max-w-168'>{recipe.description}</p>
-                                    <p className=''>Likes: {recipe.likes}</p>
-                                    <p className=''>Likes: {recipe.rating}</p>
-                                    <a className='text-[18px] font-bold text-orange-600 font-serif hover:text-orange-800 hover:cursor-pointer w-fit'>CONTINUE READING</a>
+                                    <p>Likes: {recipe.likes}</p>
+                                    <p>Rating: {recipe.rating}</p>
+                                    <Link to={`recipe/${recipe?._id}`}><a className='text-[18px] font-bold text-orange-600 font-serif hover:text-orange-800 hover:cursor-pointer w-fit'>CONTINUE READING</a></Link>
                                 </div>
                             </div>
                         <hr className='my-8 w-[70%] mx-auto text-gray-400'/>
