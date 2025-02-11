@@ -1,5 +1,6 @@
 const express = require("express");
 const Recipe = require("../models/Recipe");
+const user=require("../models/user");
 const router = express.Router();
 const { verifyToken } = require("../middleware/authMiddleware");
 const upload = require("../middleware/uploadMiddleware"); // Import the upload middleware
@@ -95,7 +96,10 @@ router.post('/get-recipes', async (req, res) => {
             const fetchRecipeFromId = await Recipe.findById(id);
             return res.status(200).json({ message: "Recipe fetched successfully!", recipe: fetchRecipeFromId });
         }
-
+        if (condition === "user" && id) {
+            const fetchRecipeFromId = await Recipe.find({uploadedBy: id});
+            return res.status(200).json({ message: "Recipe fetched successfully!", recipe: fetchRecipeFromId });
+        }
         return res.status(400).json({ message: "Invalid condition parameter" });
 
     } catch (err) {
