@@ -13,7 +13,8 @@ export const Addrecipe = () => {
     const [imageUrl, setImageUrl] = useState("");
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user")); 
-    const userId = user?.username;
+    const userId = user?.id;
+    const [currentUserName, setCurrentUserName]=useState("");
     const [bio, setBio] = useState("");
     const navigate=useNavigate();
     useEffect(() => {
@@ -26,12 +27,14 @@ export const Addrecipe = () => {
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setBio(response.data.user.bio);
+                setCurrentUserName(response.data.user.name);
             } catch (error) {
                 console.error("Failed to fetch profile:", error);
             }
         };
         currentUser();
     }, [userId, token]);
+ 
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -39,7 +42,6 @@ export const Addrecipe = () => {
             setImage(file); // Store file object instead of Base64
         }
     };
-
     const AddRecipe = async () => {
         try {
             const formData = new FormData();
@@ -51,7 +53,7 @@ export const Addrecipe = () => {
             formData.append("time", time);
             formData.append("yield", yields);
             formData.append("instructions", instructions);
-            formData.append("uploadedBy", userId);
+            formData.append("uploadedBy", currentUserName);
             formData.append("uploadedByBio", bio);
     
             const response = await axios.post(

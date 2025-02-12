@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import loginImg from '../assets/login-img.png'
+import hero from '../assets/hero.png'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
 
@@ -28,45 +28,11 @@ export const Home = () => {
                     Simple recipes made for <span className='font-sans text-amber-700'>real, actual, everyday life.</span>
                 </p>
             </div>
-
-            <div className='category-container h-[75vh] w-full bg-gray-100 '>
-                {/* Categories */}
-                <div className='image-container flex justify-center gap-3 max-w-5xl mx-auto'>
-                    <div className='group element relative my-7 h-80 w-65 mx-auto'>
-                        <img src={loginImg} alt="winter" className='h-70 w-60 z-0 mx-auto group-hover:opacity-70' />
-                        <p className='absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 bg-amber-500 w-fit max-w-30 px-3.5 py-1.5 text-[18px] font-serif '>
-                            Vegitarian
-                        </p>
-                    </div>
-                    <div className='group element relative my-7 h-80 w-65 mx-auto'>
-                        <img src={loginImg} alt="winter" className='h-70 w-60 z-0 mx-auto group-hover:opacity-70' />
-                        <p className='absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 bg-amber-500 w-fit max-w-30 px-3.5 py-1.5 text-[18px] font-serif '>
-                            Vegitarian
-                        </p>
-                    </div>
-                    <div className='group element relative my-7 h-80 w-65 mx-auto'>
-                        <img src={loginImg} alt="winter" className='h-70 w-60 z-0 mx-auto group-hover:opacity-70' />
-                        <p className='absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 bg-amber-500 w-fit max-w-30 px-3.5 py-1.5 text-[18px] font-serif '>
-                            Vegitarian
-                        </p>
-                    </div>
-                    <div className='group element relative my-7 h-80 w-65 mx-auto'>
-                        <img src={loginImg} alt="winter" className='h-70 w-60 z-0 mx-auto group-hover:opacity-70' />
-                        <p className='absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 bg-amber-500 w-fit max-w-30 px-3.5 py-1.5 text-[18px] font-serif '>
-                            Vegitarian
-                        </p>
-                    </div>
+                <div>
+                    <img src={hero} className='w-[90%] mx-auto'/>
                 </div>
-                {/* More Categories */}
-                <div className='more-categories flex justify-center gap-8 max-w-5xl mx-auto'>
-                    <div className='flex flex-col items-center group'>
-                        <img src={loginImg} className='h-20 w-20 rounded-full group-hover:opacity-70'/>
-                        <p className='max-w-20 text-center font-bold group-hover:opacity-70'>Quick and Easy</p>
-                    </div>
-                </div>
-            </div>
                 {/* Latest and Trending recipes */}
-                <div className='trending-recipes w-full h-fit flex flex-col items-center bg-amber-50'>
+                <div className='trending-recipes w-full h-fit flex flex-col items-center bg-amber-50 mt-3'>
                     <p className='mt-8 text-2xl font-stretch-95% bg-gray-400 p-3 font-semibold'>Latest and Trending recipes</p>
                     <hr className='my-8 w-[70%] mx-auto text-gray-400'/>
                     <div className='tile-container mt-8'>

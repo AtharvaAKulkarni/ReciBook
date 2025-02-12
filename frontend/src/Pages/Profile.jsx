@@ -8,8 +8,11 @@ export const Profile = () => {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [profile, setProfile] = useState(null);
     const [recipes, setRecipes] = useState(null);
+    const [image, setImage] = useState("");
+    const [bio, setBio] = useState("");
+    const [editingBio, setEditingBio] = useState(false);
+    const [userId, setUserId] = useState("");
     useEffect(() => {
-
         if (!token) {
             navigate('/login');
             return;
@@ -25,6 +28,7 @@ export const Profile = () => {
                     }
                 )
                 setProfile(response.data.user);
+                setUserId(response.data.user._id);
             }
             catch (err) {
                 alert("Session expired, please log in again.");
@@ -42,7 +46,7 @@ export const Profile = () => {
     useEffect(() => {
         const getRecipes = async () => {
             try {
-                const response = await axios.post('http://localhost:3000/get-recipes', { condition: "user", id: profile.username });
+                const response = await axios.post('http://localhost:3000/get-recipes', { condition: "user", id: profile.name});
                 setRecipes(response.data.recipe);
             }
             catch (error) {
@@ -52,17 +56,79 @@ export const Profile = () => {
 
         getRecipes();
     }, [profile])
-    console.log(recipes);
+    // console.log(recipes);
+    const handleProfilePictureUpdate = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
 
+        const formData = new FormData();
+        formData.append("profilePicture", file);
+        formData.append("userId", profile._id); 
+
+        try {
+            const response = await axios.put(
+                "http://localhost:3000/update-profile/picture",
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            if (response.data.success) {
+                alert("Profile picture updated successfully!");
+                setProfile({ ...profile, profilePicture: `http://localhost:3000/${response.data.user.profilePicture}` }); // Update UI
+            }
+        } catch (error) {
+            console.error("Error updating profile picture:", error);
+        }
+    };
+
+
+    const handleBio = async () => {
+        if (!bio.trim()) return alert("Bio cannot be empty!");
+
+        try {
+            const response = await axios.put(
+                "http://localhost:3000/update-profile/bio",
+                { userId: profile?._id, bio },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            if (response.data.success) {
+                alert("Bio updated successfully!");
+                setProfile(prev => ({ ...prev, bio })); // Update UI
+                setEditingBio(false); // Hide input after updating
+            }
+        } catch (error) {
+            console.log("Error updating bio:", error);
+        }
+    }
+
+
+console.log(profile);
     return (
         <div>
             {profile ? (
-                <div>
+                <div className='flex flex-col items-center mb-4'>
                     <h1 className='text-center text-2xl font-bold mt-4'>Welcome {profile.name}</h1>
                     <img className='h-50 w-50 rounded-full mx-auto' src={profile.profilePicture} />
-                    <button className='border-2 p-3 rounded-2xl bg-blue-400'>Update Profile Picture</button>
-                    <p className='text-center flex gap-2 justify-center'>About:<span className='text-center'>{profile.bio}</span></p>
-                    <button className='border-2 p-3 rounded-2xl bg-blue-400'>Update Bio</button>
+                    <label className="border-2 p-3 rounded-2xl bg-blue-400 cursor-pointer">
+                        Update Profile Picture
+                        <input type="file" accept="image/*" onChange={handleProfilePictureUpdate} className="hidden" />
+                    </label>
+                    <p className='text-center flex gap-2 justify-center text-2xl p-3 font-bold font-[Poppins] text-gray-600'>About:<span className='text-center text-black font-semibold font-[Sour_Gummy]'>{profile.bio}</span></p>
+                    <button onClick={() => setEditingBio(true)} className='border-2 p-3 rounded-2xl bg-blue-400 w-fit'>Update Bio</button>
+                    {editingBio && (
+                        <div className='mt-4 w-fit mx-auto flex gap-2 mb-4'>
+                            <input className='border-b-1 border-gray-400 focus:outline-none focus:border-gray-800 text-xl' onChange={(e) => setBio(e.target.value)} type='text' />
+                            <button className='bg-amber-300 p-2 rounded-xl' onClick={handleBio}>Change About</button>
+                        </div>
+                    )}
                 </div>
             ) : (
                 <div className='mx-auto my-auto'><p className='text-center text-2xl font-bold'>Loading Your Profile..</p></div>
@@ -82,7 +148,7 @@ export const Profile = () => {
                                             <p>Likes: {recipe.likes}</p>
                                         </div>
                                     </div>
-                                    <hr className='w-[80%] text-gray-400 mt-2 text-center'/>
+                                    <hr className='w-[80%] text-gray-400 mt-2 text-center' />
                                 </Link>
                             ))
                         ) : (

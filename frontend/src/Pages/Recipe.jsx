@@ -136,10 +136,9 @@ export const Recipe = () => {
 
       {/* User info */}
       <div className="flex gap-3 ml-20 h-fit p-4 w-[70vw] bg-white mt-8 items-center rounded-2xl">
-        <img src={loginImg} className="h-40 w-40 rounded-full" />
         <div className="flex flex-col items-start">
           <p>
-            {recipe?.uploadedBy}
+            Uploaded By: {recipe?.uploadedBy}
           </p>
           <p>
             {recipe?.uploadedByBio}
