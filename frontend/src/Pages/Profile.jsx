@@ -20,7 +20,7 @@ export const Profile = () => {
         const getProfile = async () => {
             try {
                 const user = JSON.parse(localStorage.getItem('user'));
-                const response = await axios.post('http://localhost:3000/get-profile', { userId: user.id },
+                const response = await axios.post('https://recipe-book-api-nu.vercel.app/get-profile', { userId: user.id },
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ export const Profile = () => {
     useEffect(() => {
         const getRecipes = async () => {
             try {
-                const response = await axios.post('http://localhost:3000/get-recipes', { condition: "user", id: profile.name});
+                const response = await axios.post('https://recipe-book-api-nu.vercel.app/get-recipes', { condition: "user", id: profile.name});
                 setRecipes(response.data.recipe);
             }
             catch (error) {
@@ -67,7 +67,7 @@ export const Profile = () => {
 
         try {
             const response = await axios.put(
-                "http://localhost:3000/update-profile/picture",
+                "https://recipe-book-api-nu.vercel.app/update-profile/picture",
                 formData,
                 {
                     headers: {
@@ -79,7 +79,7 @@ export const Profile = () => {
 
             if (response.data.success) {
                 alert("Profile picture updated successfully!");
-                setProfile({ ...profile, profilePicture: `http://localhost:3000/${response.data.user.profilePicture}` }); // Update UI
+                setProfile({ ...profile, profilePicture: `https://recipe-book-api-nu.vercel.app/${response.data.user.profilePicture}` }); // Update UI
             }
         } catch (error) {
             console.error("Error updating profile picture:", error);
@@ -92,7 +92,7 @@ export const Profile = () => {
 
         try {
             const response = await axios.put(
-                "http://localhost:3000/update-profile/bio",
+                "https://recipe-book-api-nu.vercel.app/update-profile/bio",
                 { userId: profile?._id, bio },
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -142,7 +142,7 @@ console.log(profile);
                             recipes.map((recipe, index) => (
                                 <Link to={`/recipe/${recipe._id}`}>
                                     <div className=' w-[80%] p-3 flex gap-4 hover:bg-white group transition-[10s] ease-in-out rounded-2xl'>
-                                        <img className='w-40 h-40 ml-10 group-hover:scale-110 rounded-2xl' src={`http://localhost:3000${recipe?.imageUrl}`} />
+                                        <img className='w-40 h-40 ml-10 group-hover:scale-110 rounded-2xl' src={`recipe-book-api-nu.vercel.app${recipe?.imageUrl}`} />
                                         <div className='flex w-full h-full justify-around'>
                                             <h1 className='text-3xl font-[Sour_Gummy] group-hover:bg-amber-100 p-2'>{recipe.name}</h1>
                                             <p>Likes: {recipe.likes}</p>

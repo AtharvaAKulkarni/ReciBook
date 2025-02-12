@@ -15,7 +15,7 @@ export const Login = () => {
   const [password, setPassword]=useState("");
   const handleLogin=async()=>{
     try{
-      const response=await axios.post('http://localhost:3000/login', {username, password});
+      const response=await axios.post('https://recipe-book-api-nu.vercel.app/login', {username, password});
       alert("Login Success");
       localStorage.setItem('token', response.data.token);
       console.log("Token set in local storage!");

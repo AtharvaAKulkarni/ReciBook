@@ -14,7 +14,7 @@ export const Recipe = () => {
   useEffect(() => {
     const getRecipeInfo = async () => {
       try {
-        const res = await axios.post("http://localhost:3000/get-recipes", {
+        const res = await axios.post("https://recipe-book-api-nu.vercel.app/get-recipes", {
           condition: "id",
           id,
         });
@@ -34,7 +34,7 @@ export const Recipe = () => {
   // Loading & Error Handling
   if (loading) return <p>Loading...</p>;
   if (!recipe) return <p>Recipe not found</p>;
-  console.log(`http://localhost:3000${recipe?.imageUrl}`);
+  console.log(`recipe-book-api-nu.vercel.app${recipe?.imageUrl}`);
   return (
     <div className="flex flex-col h-full w-full bg-green-950">
       <div className="w-fit mx-auto h-fit mt-4 text-black">
@@ -68,7 +68,7 @@ export const Recipe = () => {
       <div className="flex gap-2 w-fit h-fit mx-auto">
         {/* First image - Always visible */}
         <img
-          src={`http://localhost:3000${recipe?.imageUrl}`}
+          src={`recipe-book-api-nu.vercel.app${recipe?.imageUrl}`}
           alt="Recipe"
           className="w-[90vw] h-[50vh] mx-auto mt-8 md:w-[70vw] md:h-[80vh]"
         />
@@ -78,7 +78,7 @@ export const Recipe = () => {
       {/* Recipe Instructions & Ingredients */}
       <section className="bg-amber-50 mt-8" id="recipe">
         <div className="bg-purple-400 flex flex-col mt-13 w-[50vw] mx-auto mb-8 p-1 pb-3">
-          <img src={`http://localhost:3000${recipe?.imageUrl}`} className="h-25 w-25 rounded-full mx-auto -translate-y-8" />
+          <img src={`recipe-book-api-nu.vercel.app${recipe?.imageUrl}`} className="h-25 w-25 rounded-full mx-auto -translate-y-8" />
           <p className="mx-auto text-2xl font-bold text-white font-[Poppins]">
             {recipe?.name}
           </p>
