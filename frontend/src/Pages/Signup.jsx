@@ -15,7 +15,7 @@ export const Signup = () => {
             return;
         }
         try{
-            const response=await axios.post('https://recipe-book-api-nu.vercel.app/sign-up', {name, username, email, password});
+            const response=await axios.post('http://localhost:3000/sign-up', {name, username, email, password});
             alert(response.data.message);
             if(response.data.success===true){ navigate('/login'); }
         }

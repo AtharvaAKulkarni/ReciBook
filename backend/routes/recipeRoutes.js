@@ -106,5 +106,7 @@ router.post('/get-recipes', async (req, res) => {
         return res.status(500).json({ message: "Server error", error: err });
     }
 });
-
+router.get('/get-recipes', (req, res)=>{
+    res.send("Working fine");
+})
 module.exports = router;

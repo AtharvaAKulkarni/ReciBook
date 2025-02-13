@@ -22,7 +22,7 @@ export const Addrecipe = () => {
         const currentUser = async () => {
             try {
                 const response = await axios.post(
-                    "https://recipe-book-api-nu.vercel.app/get-profile",
+                    "http://localhost:3000/get-profile",
                     { userId },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -57,7 +57,7 @@ export const Addrecipe = () => {
             formData.append("uploadedByBio", bio);
     
             const response = await axios.post(
-                "https://recipe-book-api-nu.vercel.app/add-recipe",
+                "http://localhost:3000/add-recipe",
                 formData, // ✅ Send FormData
                 {
                     headers: {
