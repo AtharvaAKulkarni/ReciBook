@@ -15,7 +15,7 @@ export const Signup = () => {
             return;
         }
         try{
-            const response=await axios.post('http://localhost:3000/sign-up', {name, username, email, password});
+            const response=await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/sign-up`, {name, username, email, password});
             alert(response.data.message);
             if(response.data.success===true){ navigate('/login'); }
         }

@@ -10,7 +10,7 @@ export const Home = () => {
     useEffect(()=>{
         const getTrending=async ()=>{
             try{
-                const trendingRecipes=await axios.post('http://localhost:3000/get-recipes', {condition:"trending"});
+                const trendingRecipes=await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/get-recipes`, {condition:"trending"});
                 setTrending(trendingRecipes.data.recipes);
             }
             catch(err){
@@ -39,7 +39,7 @@ export const Home = () => {
                         {trending.map((recipe, index)=>(
                         <>
                             <div key={index} className='trending-element flex h-[35vh] max-h-[55vh] w-[70vw] justify-start bg-cyan-5 space-x-8.5'>
-                                <img src={`http://localhost:3000${recipe?.imageUrl}`} className='w-60 h-60 hover:opacity-75'/>
+                                <img src={`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}${recipe?.imageUrl}`} className='w-60 h-60 hover:opacity-75'/>
                                 <div className='flex flex-col h-[60%] max-h-[100%] w-full justify-baseline gap-2'>
                                     <p className='text-xl text-gray-800'>{recipe?.uploadedOn.substring(0, 10)}</p>
                                     <Link to={`recipe/${recipe?._id}`}><p className='text-2xl font-bold font-serif hover:underline hover:cursor-pointer'>{recipe.name}</p></Link>
