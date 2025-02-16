@@ -1,6 +1,13 @@
 console.log("Welcome to Backend!");
 const express = require("express");
 const cors = require("cors");
+const app = express();
+app.use(cors({
+  origin: "https://reci-book-wmjj.vercel.app", // or replace "*" with your frontend URL: ""
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true
+}));
 const mongoose = require("mongoose");
 require("dotenv").config();
 
@@ -9,8 +16,7 @@ const userRoutes = require("./routes/userRoutes");
 const recipeRoutes = require("./routes/recipeRoutes");
 const connectDB = require("./config/db");
 
-const app = express();
-app.use(cors());
+
 app.use(express.json({ limit: "50mb" }));  
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
