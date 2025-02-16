@@ -2,6 +2,19 @@ console.log("Welcome to Backend!");
 const express = require("express");
 const cors = require("cors");
 const app = express();
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://reci-book-wmjj.vercel.app"); // Allow frontend domain
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200); // Handle CORS preflight requests
+  }
+
+  next();
+});
+
 app.use(cors({
   origin: "https://reci-book-wmjj.vercel.app", // or replace "*" with your frontend URL: ""
   methods: "GET,POST,PUT,DELETE",
