@@ -2,6 +2,7 @@ console.log("Welcome to Backend!");
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const path = require('path');
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "https://reci-book-wmjj.vercel.app"); // Allow frontend domain
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
@@ -36,7 +37,8 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 // ✅ Serve static images from the uploads folder
-app.use("/uploads", express.static("uploads"));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 console.log(process.env.MONGO_URI);
 
